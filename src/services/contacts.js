@@ -11,26 +11,25 @@ export const getContactById = async (contactId) => {
 };
 
 export const createContact = async (payload) => {
-  const contact = await ContactCollection(payload);
+  const contact = await ContactCollection.create(payload);
   return contact;
 };
 
-export const updateContact = async (studentId, payload, options = {}) => {
+export const updateContact = async (contactId, payload, options = {}) => {
   const rawResult = await ContactCollection.findByIdAndUpdate(
-    { _id: studentId },
+    contactId,
     payload,
     {
       new: true,
-      includeResultMetadata: true,
       ...options,
     },
   );
 
-  if (!rawResult || rawResult.values) return null;
+  if (!rawResult) return null;
 
   return {
-    contact: rawResult.values,
-    isNew: Boolean(rawResult?.lastErrorObject?.upserted),
+    contact: rawResult,
+    isNew: false,
   };
 };
 
