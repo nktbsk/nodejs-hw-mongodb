@@ -1,0 +1,61 @@
+tags:
+  - Contacts
+summary: Redact contact
+operationId: redactContact
+description: 'Redact a contact'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            description: "Contact's name"
+            type: string
+            example: 'John Doe'
+          phoneNumber:
+            description: "Contact's phoneNumber"
+            type: string
+            example: '0665389501'
+          email:
+            description: "Contact's email"
+            type: string
+            example: john.doe@example.com
+          isFavourite:
+            description: "Contact's favourite"
+            type: boolean
+            example: false
+          contactType:
+            description: "Contact's contactType"
+            type: string
+            enum: ['work', 'home', 'personal']
+            example: 'personal'
+          photo:
+            description: "Contact's photo"
+            type: string
+            format: binary
+responses:
+  '200':
+    description: Redact a contact
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully updated the contact!!
+            data:
+              type: object
+              $ref: '../../../components/schemas/contact.yaml'
+  '401':
+    $ref: '../../../components/responses/401.yaml'
